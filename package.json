@@ -1,0 +1,39 @@
+{
+  "name": "kora-thrive-agric",
+  "private": true,
+  "version": "0.0.0",
+  "description": "a Sails application",
+  "keywords": [],
+  "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
+    "async": "2.0.1",
+    "connect-redis": "3.2.0",
+    "jsonwebtoken": "^8.1.1",
+    "lodash": "3.10.1",
+    "sails": "^1.0.0-46",
+    "sails-hook-apianalytics": "^2.0.0",
+    "sails-hook-organics": "^0.13.0",
+    "sails-hook-orm": "^2.0.0-16",
+    "sails-hook-sockets": "^1.4.0",
+    "sails-mongo": "^1.0.0-11",
+    "socket.io-redis": "5.2.0"
+  },
+  "devDependencies": {
+    "eslint": "4.11.0",
+    "grunt": "1.0.1",
+    "sails-hook-grunt": "^3.0.2"
+  },
+  "scripts": {
+    "start": "nodemon --ignore node_modules app.js"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.pettersonapps.com:Backend/Kora_ThriveAgric_Server.git"
+  },
+  "author": "PettersonApps",
+  "license": "",
+  "engines": {
+    "node": "8"
+  }
+}
