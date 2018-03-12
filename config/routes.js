@@ -17,5 +17,6 @@ module.exports.routes = {
   'POST   /api/v1/users':                                 { action: 'v1/users/create' },
   'PUT    /api/v1/users/:id':                             { action: 'v1/users/update' },
   'GET    /api/v1/users/:id':                             { action: 'v1/users/show' },
+  'DELETE /api/v1/users/:id':                             { action: 'v1/users/destroy' },
 
 };

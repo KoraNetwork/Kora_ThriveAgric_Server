@@ -21,12 +21,17 @@ module.exports = {
     },
     noContent: {
       statusCode: 204
+    },
+    forbidden: {
+      statusCode: 403
     }
   },
 
   fn: async function (inputs, exits) {
 
     const currUser = this.req.currentUser;
+
+    if(currUser.role !== 'admin') return exits.forbidden();
 
     const user = await User.findOne(inputs.id);
 
