@@ -90,7 +90,8 @@ and exposed as \`req.me\`.)`
     const response = {
       id: userRecord.id,
       emailAddress: userRecord.emailAddress,
-      fullName: userRecord.fullName,
+      firstName: userRecord.firstName,
+      lastName: userRecord.lastName,
       session_token: await sails.helpers.jwtSign({ uid: userRecord.id })
     };
 

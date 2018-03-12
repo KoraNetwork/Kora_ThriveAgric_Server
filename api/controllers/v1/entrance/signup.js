@@ -22,12 +22,17 @@ module.exports = {
       description: 'The unencrypted password to use for the new account.'
     },
 
-    fullName:  {
+    firstName:  {
       required: true,
       type: 'string',
-      example: 'Frida Kahlo de Rivera',
-      description: 'The user\'s full name.',
-    }
+      example: 'Frida de Rivera'
+    },
+
+    lastName:  {
+      required: true,
+      type: 'string',
+      example: 'de Rivera'
+    },
 
   },
 
@@ -35,7 +40,7 @@ module.exports = {
 
     invalid: {
       responseType: 'badRequest',
-      description: 'The provided fullName, password and/or email address are invalid.',
+      description: 'The provided firstName, password and/or email address are invalid.',
       extendedDescription: 'If this request was sent from a graphical user interface, the request '+
       'parameters should have been validated/coerced _before_ they were sent.'
     },
@@ -59,7 +64,8 @@ module.exports = {
     var newUserRecord = await User.create(Object.assign({
       emailAddress: newEmailAddress,
       password: await sails.helpers.passwords.hashPassword(inputs.password),
-      fullName: inputs.fullName,
+      firstName: inputs.firstName,
+      lastName: inputs.lastName,
       tosAcceptedByIp: this.req.ip
     }, sails.config.custom.verifyEmailAddresses? {
       emailProofToken: await sails.helpers.strings.random('url-friendly'),
@@ -91,7 +97,7 @@ module.exports = {
         subject: 'Please confirm your account',
         template: 'email-verify-account',
         templateData: {
-          fullName: inputs.fullName,
+          firstName: inputs.firstName,
           token: newUserRecord.emailProofToken
         }
       });

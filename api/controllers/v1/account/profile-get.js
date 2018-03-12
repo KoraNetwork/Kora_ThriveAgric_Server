@@ -30,14 +30,7 @@ module.exports = {
       return exits.notFound()
     }
 
-    const response = {
-      id: user.id,
-      emailAddress: user.emailAddress,
-      fullName: user.fullName,
-      avatarUrl: user.avatarUrl
-    };
-
-    return exits.success(response);
+    return exits.success(User.asJSON(user));
   }
 
 

@@ -13,4 +13,9 @@ module.exports.routes = {
   'POST   /api/v1/passwords/forgot':                      { action: 'v1/passwords/forgot' },
   'PUT    /api/v1/passwords/restore':                     { action: 'v1/passwords/restore' },
 
+  'GET    /api/v1/users':                                 { action: 'v1/users/index' },
+  'POST   /api/v1/users':                                 { action: 'v1/users/create' },
+  'PUT    /api/v1/users/:id':                             { action: 'v1/users/update' },
+  'GET    /api/v1/users/:id':                             { action: 'v1/users/show' },
+
 };

@@ -4,6 +4,8 @@
  * A user who can log in to this application.
  */
 
+const phoneRegex = /^([0-9]( |-)?)?(\(?[0-9]{3}\)?|[0-9]{3})( |-)?([0-9]{3}( |-)?[0-9]{4}|[a-zA-Z0-9]{7})$/;
+
 module.exports = {
 
   attributes: {
@@ -25,12 +27,18 @@ module.exports = {
       example: '2$28a8eabna301089103-13948134nad'
     },
 
-    fullName: {
+    firstName: {
       type: 'string',
       required: true,
-      description: 'Full representation of the user\'s name',
       maxLength: 120,
-      example: 'Lisa Microwave van der Jenny'
+      example: 'Lisa'
+    },
+
+    lastName: {
+      type: 'string',
+      required: true,
+      maxLength: 120,
+      example: 'Simpson'
     },
 
     passwordResetToken: {
@@ -119,6 +127,11 @@ email status until they click the link in the confirmation email.`
       description: 'The (still-unconfirmed) email address that this user wants to change to.'
     },
 
+    phoneNumber: {
+      type: 'string',
+      regex: phoneRegex
+    },
+
     tosAcceptedByIp: {
       type: 'string',
       description: 'The IP (ipv4) address of the request that accepted the terms of service.',
@@ -134,7 +147,8 @@ email status until they click the link in the confirmation email.`
 
     role: {
       type: 'string',
-      isIn: ['agent', 'farmer', 'admin']
+      isIn: ['admin', 'agent', 'farmer', 'user'],
+      required: true
     },
 
     avatarUrl: {
@@ -147,8 +161,10 @@ email status until they click the link in the confirmation email.`
 
   },
 
-  toJSON: function (user) {
-    return _.pick(user, ['fullName', 'email'])
+  roles: ['admin', 'agent', 'farmer', 'user'],
+
+  asJSON: function (user) {
+    return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber'])
   }
 
 };
