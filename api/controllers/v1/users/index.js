@@ -19,6 +19,9 @@ module.exports = {
     },
     sortType: {
       type: 'string'
+    },
+    emailAddress: {
+      type: 'string'
     }
   },
 
