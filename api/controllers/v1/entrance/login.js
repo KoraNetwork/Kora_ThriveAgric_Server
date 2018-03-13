@@ -54,16 +54,9 @@ and exposed as \`req.me\`.)`
     },
 
     badCombo: {
+      statusCode: 400,
       description: `The provided email and password combination does not
-      match any user in the database.`,
-      responseType: 'unauthorized'
-      // ^This uses the custom `unauthorized` response located in `api/responses/unauthorized.js`.
-      // To customize the generic "unauthorized" response across this entire app, change that file
-      // (see http://sailsjs.com/anatomy/api/responses/unauthorized-js).
-      //
-      // To customize the response for _only this_ action, replace `responseType` with
-      // something else.  For example, you might set `statusCode: 498` and change the
-      // implementation below accordingly (see http://sailsjs.com/docs/concepts/controllers).
+      match any user in the database.`
     }
 
   },
@@ -80,12 +73,14 @@ and exposed as \`req.me\`.)`
 
     // If there was no matching user, respond thru the "badCombo" exit.
     if(!userRecord) {
-      throw 'badCombo';
+      return exits.badCombo({ error: 'Invalid email and password combination' })
     }
 
     // If the password doesn't match, then also exit thru "badCombo".
     await sails.helpers.passwords.checkPassword(inputs.password, userRecord.password)
-    .intercept('incorrect', 'badCombo');
+    .intercept('incorrect', () => {
+      return exits.badCombo({ error: 'Invalid email and password combination' })
+    });
 
     const response = {
       id: userRecord.id,
