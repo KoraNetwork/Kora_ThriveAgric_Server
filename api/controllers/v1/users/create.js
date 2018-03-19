@@ -33,6 +33,30 @@ module.exports = {
       type: 'string'
     },
 
+    address: {
+      type: 'string'
+    },
+
+    bankName: {
+      type: 'string'
+    },
+
+    bankRoutingNumber: {
+      type: 'string'
+    },
+
+    acountNumber: {
+      type: 'string'
+    },
+
+    businessName: {
+      type: 'string'
+    },
+
+    businessAddress: {
+      type: 'string'
+    },
+
     password: {
       type: 'string'
     }
@@ -57,6 +81,12 @@ module.exports = {
       lastName: inputs.lastName,
       emailStatus: inputs.emailStatus,
       phoneNumber: inputs.phoneNumber,
+      address: inputs.address,
+      bankName: inputs.bankName,
+      bankRoutingNumber: inputs.bankRoutingNumber,
+      acountNumber: inputs.acountNumber,
+      businessName: inputs.businessName,
+      businessAddress: inputs.businessAddress,
       password: await sails.helpers.passwords.hashPassword(inputs.firstName + '-123'),
       role: inputs.role
     })

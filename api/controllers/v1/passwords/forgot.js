@@ -25,6 +25,10 @@ module.exports = {
       description: 'The email address might have matched a user in the database.  (If so, a recovery email was sent.)'
     },
 
+    badRequest: {
+      statusCode: 400,
+    }
+
   },
 
 
@@ -34,7 +38,7 @@ module.exports = {
     // (Even if no such user exists, pretend it worked to discourage sniffing.)
     var userRecord = await User.findOne({ emailAddress: inputs.emailAddress });
     if (!userRecord) {
-      return exits.success();
+      return exits.badRequest({error: 'This email is not registered'});
     }//•
 
     // Come up with a pseudorandom, probabilistically-unique token for use

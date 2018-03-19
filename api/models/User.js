@@ -43,6 +43,32 @@ module.exports = {
       example: 'Simpson'
     },
 
+    address: {
+      type: 'string',
+      maxLength: 32,
+    },
+
+    bankName: {
+      type: 'string',
+      maxLength: 32,
+    },
+
+    bankRoutingNumber: {
+      type: 'string',
+    },
+
+    acountNumber: {
+      type: 'string'
+    },
+
+    businessName: {
+      type: 'string'
+    },
+
+    businessAddress: {
+      type: 'string'
+    },
+
     passwordResetToken: {
       type: 'string',
       description: 'A unique token used to verify the user\'s identity when recovering a password.  Expires after 1 use, or after a set amount of time has elapsed.'
@@ -167,7 +193,7 @@ email status until they click the link in the confirmation email.`
   roles: availableRoles,
 
   asJSON: function (user) {
-    return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber'])
+    return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber', 'address'])
   }
 
 };
