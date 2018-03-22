@@ -56,6 +56,22 @@ module.exports = {
       type: 'string'
     },
 
+    question1: {
+      type: 'string'
+    },
+
+    question2: {
+      type: 'string'
+    },
+
+    answer1: {
+      type: 'string'
+    },
+
+    answer2: {
+      type: 'string'
+    },
+
     password: {
       type: 'string'
     }
@@ -63,7 +79,9 @@ module.exports = {
 
 
   exits: {
-
+    badRequest: {
+      statusCode: 400
+    }
   },
 
 
@@ -81,15 +99,19 @@ module.exports = {
     if(inputs.acountNumber) valuesToSet.address = inputs.acountNumber;
     if(inputs.businessName) valuesToSet.address = inputs.businessName;
     if(inputs.businessAddress) valuesToSet.address = inputs.businessAddress;
+    if(inputs.question1) valuesToSet.question1 = inputs.question1;
+    if(inputs.question2) valuesToSet.question2 = inputs.question2;
+    if(inputs.answer1) valuesToSet.answer1 = inputs.answer1;
+    if(inputs.answer2) valuesToSet.answer2 = inputs.answer2;
     sails.log('zzzzzzz');
     sails.log(valuesToSet);
     sails.log('zzzzzzz');
-    let res = await User.update({id: inputs.id }).set(valuesToSet);
-    sails.log('zzzzzzz');
-    sails.log(valuesToSet);
-    sails.log('zzzzzzz');
-
-    return exits.success(valuesToSet);
+    User.update({id: inputs.id }).set(valuesToSet).exec(function(error, result) {
+      if (error) return exits.badRequest({
+        error
+      });
+      return exits.success(valuesToSet)
+    })
 
   }
 

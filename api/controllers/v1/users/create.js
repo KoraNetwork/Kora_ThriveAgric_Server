@@ -57,6 +57,22 @@ module.exports = {
       type: 'string'
     },
 
+    question1: {
+      type: 'string'
+    },
+
+    question2: {
+      type: 'string'
+    },
+
+    answer1: {
+      type: 'string'
+    },
+
+    answer2: {
+      type: 'string'
+    },
+
     password: {
       type: 'string'
     }
@@ -75,7 +91,7 @@ module.exports = {
 
     if(!User.roles.includes(inputs.role)) return exits.badRequest({message: 'Invalid role given'});
 
-    await User.create({
+    const user = await User.create({
       emailAddress: inputs.emailAddress,
       firstName: inputs.firstName,
       lastName: inputs.lastName,
@@ -87,14 +103,19 @@ module.exports = {
       acountNumber: inputs.acountNumber,
       businessName: inputs.businessName,
       businessAddress: inputs.businessAddress,
+      question1: inputs.question1,
+      question2: inputs.question2,
+      answer1: inputs.answer1,
+      answer2: inputs.answer2,
       password: await sails.helpers.passwords.hashPassword(inputs.firstName + '-123'),
-      role: inputs.role
+      role: inputs.role,
     })
-      .intercept('E_UNIQUE', () => {
-        return exits.conflict({
-          error: 'Email address is already in use.'
-        })
-      });
+      .intercept('*', (e) => {
+        return exits.badRequest(e)
+        // return exits.conflict({
+        //   error: 'Email address is already in use.'
+        // })
+      }).fetch()
 
     return exits.success({
       message: 'Successfully saved.'

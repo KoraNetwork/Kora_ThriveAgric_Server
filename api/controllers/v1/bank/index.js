@@ -5,9 +5,7 @@ module.exports = {
   friendlyName: 'Index',
 
   inputs: {
-    role: {
-      type: 'string'
-    },
+
     page: {
       type: 'number'
     },
@@ -20,7 +18,7 @@ module.exports = {
     sortType: {
       type: 'string'
     },
-    emailAddress: {
+    filterParams: {
       type: 'string'
     }
   },
@@ -33,30 +31,24 @@ module.exports = {
 
   fn: async function (inputs, exits) {
 
-    if(!User.roles.includes(inputs.role)) return exits.badRequest({message: 'Invalid role given'});
-
     let query = { where: { and: [] } };
 
-    if(inputs.emailAddress) query.where.or = [{ emailAddress: { contains: inputs.emailAddress }},
-                                             {firstName: {contains: inputs.emailAddress}},
-                                             {lastName: {contains: inputs.emailAddress}},
-                                             {phoneNumber: {contains: inputs.emailAddress}}];
+    if(inputs.emailAddress) query.where.or = [];
     const sortColumn = inputs.sortColumn ? inputs.sortColumn : 'createdAt';
     const sortType = inputs.sortType ? inputs.sortType : 'desc';
 
     query.where.and.push({role: inputs.role})
 
-    const count = await User.count(query);
+    const count = await Bank.count(query);
 
-    query.select = ['id','firstName','lastName', 'phoneNumber', 'emailAddress', 'address', 'createdAt', 'emailStatus',
-     'role', 'businessName', 'businessAddress'];
+    query.select = ['id','bankName','bankRoutingNumber', 'acountNumber'];
     query.limit = Number(inputs.perPage) > 0 ? inputs.perPage : 10;
     query.skip = Number(inputs.page) > 0 ? (inputs.page - 1) * inputs.perPage : 0;
     query.sort = `${sortColumn} ${sortType}`;
 
-    const users = await User.find(query);
+    const banks = await Bank.find(query);
 
-    return exits.success({users, count});
+    return exits.success({banks, count});
 
   }
 

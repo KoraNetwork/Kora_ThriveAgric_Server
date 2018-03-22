@@ -1,4 +1,4 @@
-/**
+  /**
  * User.js
  *
  * A user who can log in to this application.
@@ -7,6 +7,15 @@
 const phoneRegex = /\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d| 2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]| 4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}$/;
 
 const availableRoles = ['admin', 'agent', 'farmer', 'user'];
+
+const availableQuestion = [
+  'What was your childhood nickname',
+  'What is the first name of your best friend',
+  'What is your mother’s maiden name?',
+  'What is the name of your favorite sports team?',
+  'Who is your favorite singer?',
+  'What is your passport number?'
+];
 
 module.exports = {
 
@@ -54,7 +63,7 @@ module.exports = {
     },
 
     bankRoutingNumber: {
-      type: 'string',
+      type: 'string'
     },
 
     acountNumber: {
@@ -85,17 +94,17 @@ module.exports = {
       protect: true,
       description: 'The id of the customer entry in Stripe associated with this user (or empty string if this user is not linked to a Stripe customer -- e.g. if billing features are not enabled).',
       extendedDescription:
-`Just because this value is set doesn't necessarily mean that this user has a billing card.
-It just means they have a customer entry in Stripe, which might or might not have a billing card.`
+        `Just because this value is set doesn't necessarily mean that this user has a billing card.
+        It just means they have a customer entry in Stripe, which might or might not have a billing card.`
     },
 
     hasBillingCard: {
       type: 'boolean',
       description: 'Whether this user has a default billing card hooked up as their payment method.',
       extendedDescription:
-`More specifically, this indcates whether this user record's linked customer entry in Stripe has
-a default payment source (i.e. credit card).  Note that a user have a \`stripeCustomerId\`
-without necessarily having a billing card.`
+        `More specifically, this indcates whether this user record's linked customer entry in Stripe has
+        a default payment source (i.e. credit card).  Note that a user have a \`stripeCustomerId\`
+        without necessarily having a billing card.`
     },
 
     billingCardBrand: {
@@ -143,11 +152,11 @@ without necessarily having a billing card.`
       defaultsTo: 'confirmed',
       description: 'The confirmation status of the user\'s email address.',
       extendedDescription:
-`Users might be created as "unconfirmed" (e.g. normal signup) or as "confirmed" (e.g. hard-coded
-admin users).  When the email verification feature is enabled, new users created via the
-signup form have \`emailStatus: 'unconfirmed'\` until they click the link in the confirmation email.
-Similarly, when an existing user changes their email address, they switch to the "changeRequested"
-email status until they click the link in the confirmation email.`
+        `Users might be created as "unconfirmed" (e.g. normal signup) or as "confirmed" (e.g. hard-coded
+        admin users).  When the email verification feature is enabled, new users created via the
+        signup form have \`emailStatus: 'unconfirmed'\` until they click the link in the confirmation email.
+        Similarly, when an existing user changes their email address, they switch to the "changeRequested"
+        email status until they click the link in the confirmation email.`
     },
 
     emailChangeCandidate: {
@@ -158,7 +167,6 @@ email status until they click the link in the confirmation email.`
     phoneNumber: {
       type: 'string',
       regex: phoneRegex,
-      unique: true
     },
 
     tosAcceptedByIp: {
@@ -188,12 +196,64 @@ email status until they click the link in the confirmation email.`
       type: 'string'
     },
 
+    question1: {
+      type: 'string',
+      isIn: availableQuestion
+    },
+
+    question2: {
+      type: 'string',
+      isIn: availableQuestion
+    },
+
+    answer1: {
+      type: 'string',
+      maxLength: 32
+    },
+
+    answer2: {
+      type: 'string',
+      maxLength: 32
+    }
+
   },
 
   roles: availableRoles,
 
+  question1: availableQuestion,
+
+  question2: availableQuestion,
+
   asJSON: function (user) {
-    return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber', 'address'])
-  }
+    return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber', 'address',
+                        'businessName', 'businessAddress', 'bankName', 'bankRoutingNumber', 'acountNumber',
+                         'question1', 'question2', 'answer1', 'answer2'])
+  },
+
+  beforeUpdate: function (valuesToUpdate, cb) {
+    if (!valuesToUpdate.phoneNumber){
+      return cb();
+    }
+    User.find({phoneNumber: valuesToUpdate.phoneNumber}).exec(function(err, users){
+      if(users.length && users[0].id == valuesToUpdate) {
+        return cb(new Error('phoneNumber'))
+      }else{
+        return cb()
+      }
+    })
+  },
+
+  beforeCreate: function (valuesToUpdate, cb) {
+    if (!valuesToUpdate.phoneNumber){
+      return cb();
+    }
+    User.find({phoneNumber: valuesToUpdate.phoneNumber}).exec(function(err, users){
+      if(users.length) {
+        return cb(new Error('phoneNumber'))
+      }else{
+        return cb()
+      }
+    })
+  },
 
 };
