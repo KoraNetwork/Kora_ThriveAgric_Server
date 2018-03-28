@@ -24,4 +24,6 @@ module.exports.routes = {
   'PUT    /api/v1/banks/:id':                             { action: 'v1/bank/update' },
   'GET    /api/v1/banks/:id':                             { action: 'v1/bank/show' },
 
+  'POST   /api/v1/ussd':                                  { action: 'v1/ussd/index' },
+
 };

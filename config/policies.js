@@ -17,5 +17,6 @@ module.exports.policies = {
   'v1/passwords/restore': true,
   'v1/passwords/forgot': true,
   // 'account/logout': true,
+  'v1/ussd/index': true,
 
 };
