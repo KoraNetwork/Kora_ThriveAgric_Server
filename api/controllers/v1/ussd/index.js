@@ -41,7 +41,7 @@ module.exports = {
 
 
   fn: async function (inputs, exits) {
-    sails.log.info(inputs);
+    sails.log.debug('USSD inputs:\n', inputs);
 
     let response;
 
@@ -66,7 +66,7 @@ module.exports = {
 
       case '3':
       case '2*3':
-        response = 'END';
+        response = 'END Thank you. Bye!';
         break;
 
       case '2*1':
@@ -78,7 +78,7 @@ module.exports = {
         break;
 
       default:
-        response = inputs.text;
+        response = 'END ' + inputs.text;
     }
 
     this.res.set('Content-Type', 'text/plain');
