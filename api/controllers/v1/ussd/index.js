@@ -43,42 +43,53 @@ module.exports = {
   fn: async function (inputs, exits) {
     sails.log.debug('USSD inputs:\n', inputs);
 
+    let {text} = inputs;
     let response;
 
-    switch (inputs.text) {
-      case '':
+    switch (true) {
+      case text === '':
         response = 'CON WELCOME TO KORA\n\n';
         response += '1. LOGIN\n';
         response += '2. RESET PIN\n';
         response += '3. EXIT';
         break;
 
-      case '1':
+      case text === '1':
         response = 'CON Please enter valid pin number';
         break;
 
-      case '2':
+      case text === '2':
         response = 'CON RESET PIN\n\n';
         response += '1. HOW TO RESET?\n';
         response += '2. ENNTER RESET CODE\n';
         response += '3. EXIT';
         break;
 
-      case '3':
-      case '2*3':
+      case text === '3':
+      case text === '2*3':
         response = 'END Thank you. Bye!';
         break;
 
-      case '2*1':
+      case text === '2*1':
         response = 'CON Please call XXX number to verify your identity and receive one-time sms reset code';
         break;
 
-      case '2*2':
+      case text === '2*2':
         response = 'CON Please enter one-time reset code';
         break;
 
+      case /^1\*\d{4}$/.test(text):
+        sails.log.debug('User PIN: ', text.slice(2));
+        response = 'CON FARMER FINANCIAL SERVICES\n\n';
+        response += '1. SEND TO USER\n';
+        response += '2. CASH OUT\n';
+        response += '3. VIEW BALANCE\n';
+        response += '4. VIEW HISTORY\n';
+        response += '5. EXIT';
+        break;
+
       default:
-        response = 'END ' + inputs.text;
+        response = 'END ' + text;
     }
 
     this.res.set('Content-Type', 'text/plain');
