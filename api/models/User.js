@@ -26,7 +26,7 @@ module.exports = {
     emailAddress: {
       type: 'string',
       required: true,
-      unique: true,
+      // unique: true,
       isEmail: true,
       maxLength: 200,
       example: 'carol.reyna@example.com'
@@ -230,30 +230,20 @@ module.exports = {
                          'userType', 'payrollStatus', 'bank'])
   },
 
-  beforeUpdate: function (valuesToUpdate, cb) {
-    if (!valuesToUpdate.phoneNumber){
-      return cb();
-    }
-    User.find({phoneNumber: valuesToUpdate.phoneNumber}).exec(function(err, users){
-      if(users.length && users[0].id == valuesToUpdate) {
-        return cb(new Error('phoneNumber'))
-      }else{
-        return cb()
+  indexes: [
+    {
+      attributes: { phoneNumber: 1 },
+      options: {
+        unique: true,
+        partialFilterExpression: {phoneNumber: {$exists: true}}
       }
-    })
-  },
-
-  beforeCreate: function (valuesToUpdate, cb) {
-    if (!valuesToUpdate.phoneNumber){
-      return cb();
-    }
-    User.find({phoneNumber: valuesToUpdate.phoneNumber}).exec(function(err, users){
-      if(users.length) {
-        return cb(new Error('phoneNumber'))
-      }else{
-        return cb()
+    }, {
+      attributes: { emailAddress: 1 } ,
+      options: {
+        unique: true,
+        partialFilterExpression: {emailAddress: {$exists: true}}
       }
-    })
-  },
+    }
+  ],
 
 };

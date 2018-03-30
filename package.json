@@ -12,6 +12,7 @@
     "lodash": "3.10.1",
     "sails": "^1.0.0",
     "sails-hook-apianalytics": "^2.0.0",
+    "sails-hook-mongoat": "git+https://github.com/teamfa/sails-hook-mongoat.git",
     "sails-hook-organics": "^0.13.0",
     "sails-hook-orm": "^2.0.0",
     "sails-hook-sockets": "^1.5.2",

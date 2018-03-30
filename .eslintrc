@@ -26,7 +26,8 @@
   "globals": {
     "Promise": true,
     // ^^Available since Node v4
-    "sails": true
+    "sails": true,
+    "_": true
   },
 
   "rules": {

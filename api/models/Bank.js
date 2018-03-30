@@ -20,10 +20,10 @@ module.exports = {
       model: 'user'
     }
 
-},
+  },
 
-asJSON: function (bank) {
-  return _.pick(bank, ['id', 'bankName', 'bankRoutingNumber', 'acountNumber', 'agent'])
-},
+  asJSON: function (bank) {
+    return _.pick(bank, ['id', 'bankName', 'bankRoutingNumber', 'acountNumber']);
+  },
 
 };
