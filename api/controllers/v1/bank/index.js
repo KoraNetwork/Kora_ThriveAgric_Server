@@ -46,7 +46,7 @@ module.exports = {
     query.skip = Number(inputs.page) > 0 ? (inputs.page - 1) * inputs.perPage : 0;
     query.sort = `${sortColumn} ${sortType}`;
 
-    const banks = await Bank.find(query);
+    const banks = await Bank.find(query).populate('agent');
 
     return exits.success({banks, count});
 

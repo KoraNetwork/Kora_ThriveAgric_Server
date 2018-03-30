@@ -49,7 +49,7 @@ module.exports = {
     const count = await User.count(query);
 
     query.select = ['id','firstName','lastName', 'phoneNumber', 'emailAddress', 'address', 'createdAt', 'emailStatus',
-     'role', 'businessName', 'businessAddress'];
+     'role', 'businessName', 'businessAddress', 'userType'];
     query.limit = Number(inputs.perPage) > 0 ? inputs.perPage : 10;
     query.skip = Number(inputs.page) > 0 ? (inputs.page - 1) * inputs.perPage : 0;
     query.sort = `${sortColumn} ${sortType}`;

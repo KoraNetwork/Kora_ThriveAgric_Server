@@ -22,7 +22,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
 
-    const banks = await Bank.find({id: inputs.id}).limit(1);
+    const banks = await Bank.find({id: inputs.id}).populate('agent').limit(1);
 
     if (banks.length === 0) {
       return exits.notFound()

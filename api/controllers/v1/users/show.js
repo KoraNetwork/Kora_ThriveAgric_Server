@@ -22,7 +22,7 @@ module.exports = {
 
   fn: async function (inputs, exits) {
 
-    const users = await User.find({id: inputs.id}).limit(1);
+    const users = await User.find({id: inputs.id}).populate('bank').limit(1);
 
     if (users.length === 0) {
       return exits.notFound()

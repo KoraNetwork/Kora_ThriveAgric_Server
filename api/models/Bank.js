@@ -16,10 +16,14 @@ module.exports = {
       type: 'string'
     },
 
+    agent: {
+      model: 'user'
+    }
+
 },
 
 asJSON: function (bank) {
-  return _.pick(bank, ['id', 'bankName', 'bankRoutingNumber', 'acountNumber'])
+  return _.pick(bank, ['id', 'bankName', 'bankRoutingNumber', 'acountNumber', 'agent'])
 },
 
 };

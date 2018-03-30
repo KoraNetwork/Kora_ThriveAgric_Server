@@ -17,6 +17,8 @@ const availableQuestion = [
   'What is your passport number?'
 ];
 
+const availableType = ['Kora', 'Thrive Agric'];
+
 module.exports = {
 
   attributes: {
@@ -55,19 +57,6 @@ module.exports = {
     address: {
       type: 'string',
       maxLength: 32,
-    },
-
-    bankName: {
-      type: 'string',
-      maxLength: 32,
-    },
-
-    bankRoutingNumber: {
-      type: 'string'
-    },
-
-    acountNumber: {
-      type: 'string'
     },
 
     businessName: {
@@ -188,6 +177,11 @@ module.exports = {
       required: true
     },
 
+    userType: {
+      type: 'string',
+      isIn: availableType
+    },
+
     avatarUrl: {
       type: 'string'
     },
@@ -214,6 +208,10 @@ module.exports = {
     answer2: {
       type: 'string',
       maxLength: 32
+    },
+
+    bank: {
+      model: 'bank'
     }
 
   },
@@ -224,10 +222,12 @@ module.exports = {
 
   question2: availableQuestion,
 
+  userType: availableType,
+
   asJSON: function (user) {
     return _.pick(user, ['id', 'firstName', 'lastName', 'emailAddress', 'role', 'phoneNumber', 'address',
-                        'businessName', 'businessAddress', 'bankName', 'bankRoutingNumber', 'acountNumber',
-                         'question1', 'question2', 'answer1', 'answer2'])
+                        'businessName', 'businessAddress', 'question1', 'question2', 'answer1', 'answer2',
+                         'userType', 'payrollStatus', 'bank'])
   },
 
   beforeUpdate: function (valuesToUpdate, cb) {

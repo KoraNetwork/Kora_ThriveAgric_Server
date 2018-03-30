@@ -73,6 +73,14 @@ module.exports = {
       type: 'string'
     },
 
+    userType: {
+      type: 'string'
+    },
+
+    payrollStatus: {
+      type: 'boolean'
+    },
+
     password: {
       type: 'string'
     }
@@ -98,24 +106,33 @@ module.exports = {
       emailStatus: inputs.emailStatus,
       phoneNumber: inputs.phoneNumber,
       address: inputs.address,
-      bankName: inputs.bankName,
-      bankRoutingNumber: inputs.bankRoutingNumber,
-      acountNumber: inputs.acountNumber,
       businessName: inputs.businessName,
       businessAddress: inputs.businessAddress,
       question1: inputs.question1,
       question2: inputs.question2,
       answer1: inputs.answer1,
       answer2: inputs.answer2,
+      userType: inputs.userType,
       password: await sails.helpers.passwords.hashPassword(inputs.firstName + '-123'),
       role: inputs.role,
-    })
-      .intercept('*', (e) => {
-        return exits.badRequest(e)
-        // return exits.conflict({
-        //   error: 'Email address is already in use.'
-        // })
+    }).intercept('*', (e) => {
+        return exits.badRequest({e})
       }).fetch()
+
+    if (user && user.role == 'agent') {
+      const bank = await Bank.create({
+        agent: user.id,
+        bankName: inputs.bankName,
+        bankRoutingNumber: inputs.bankRoutingNumber,
+        acountNumber: inputs.acountNumber,
+      }).intercept('*', (e) => {
+          User.destroy({id: user.id});
+          return exits.badRequest({e})
+      }).fetch()
+
+      await User.update({id: bank.agent}).set({bank: bank.id})
+
+    }
 
     return exits.success({
       message: 'Successfully saved.'
